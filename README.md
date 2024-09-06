@@ -8,6 +8,7 @@ Este proyecto de grado tiene como objetivo desarrollar un modelo predictivo y de
 
 **Andres Esteban Gonzalez Santamaria**  
 **Alexander Ramirez Chiquito**
+
 Estudiantes de 10° semestre de Ingeniería de Sistemas  
 CORPORACION UNIVERSITARIA ADVENTISTA (UNAC)
 
