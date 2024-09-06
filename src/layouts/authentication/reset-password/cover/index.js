@@ -10,7 +10,7 @@ import MDButton from "components/MDButton";
 import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
-import bgImage from "assets/images/img2.png";
+import bgImage from "public/images/img2.png";
 
 function Cover() {
   return (

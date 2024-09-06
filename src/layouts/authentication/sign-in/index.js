@@ -7,8 +7,8 @@ import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
 
-import bgImage from "assets/images/img2.png";
-import img1 from "assets/images/img3.png";
+const bgImage = "/images/img2.png";
+const img1 = "/images/img3.png";
 
 function Basic() {
   const [email, setEmail] = useState("");

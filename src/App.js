@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,8 +10,9 @@ import theme from "assets/theme";
 import themeDark from "assets/theme-dark";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-import brandWhite from "assets/images/img4.png";
-import brandDark from "assets/images/img4.png";
+
+const brandWhite = "/images/img4.png";
+const brandDark = "/images/img4.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();

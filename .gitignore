@@ -1,2 +1,27 @@
+# Dependencias
 /node_modules
-.env
+
+# Archivos de configuración y entorno
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de producción
+/build
+
+# Archivos de pruebas
+/coverage
+
+# Archivos de logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Bloqueos de dependencias
+package-lock.json
+yarn.lock
+
+# Scripts
+commit.sh

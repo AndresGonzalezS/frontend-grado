@@ -1,17 +1,12 @@
 import { useState, useEffect } from "react";
-
 import Divider from "@mui/material/Divider";
 import Switch from "@mui/material/Switch";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
-
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
-
 import ConfiguratorRoot from "examples/Configurator/ConfiguratorRoot";
-
-import img3 from "assets/images/img4.png";
 
 import {
   useMaterialUIController,
@@ -22,6 +17,8 @@ import {
   setSidenavColor,
   setDarkMode,
 } from "context";
+
+const img3 = "/images/img4.png";
 
 function Configurator() {
   const [controller, dispatch] = useMaterialUIController();
