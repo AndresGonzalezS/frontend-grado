@@ -4,7 +4,7 @@
 
 Este proyecto de grado tiene como objetivo desarrollar un modelo predictivo y descriptivo para la deserción estudiantil en la CORPORACION UNIVERSITARIA ADVENTISTA (UNAC). El modelo utiliza variables relevantes para identificar a los estudiantes que están en riesgo de abandonar sus estudios. A través de un análisis exhaustivo de datos, este modelo busca proporcionar herramientas útiles para la intervención temprana y la mejora de las tasas de retención estudiantil.
 
-## Autor
+## Autores
 
 **Andres Esteban Gonzalez Santamaria**  
 **Alexander Ramirez Chiquito**
