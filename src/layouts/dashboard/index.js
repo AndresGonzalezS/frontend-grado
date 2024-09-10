@@ -19,11 +19,9 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          {/* Sección para mostrar estadísticas de áreas */}
           {["Teología", "Ingeniería", "Salud", "Licenciatura"].map((title, index) => (
             <Grid item xs={12} md={6} lg={3} key={index}>
               <MDBox mb={1.5}>
-                {/* Aquí reemplaza MDBox con el componente adecuado si hay uno */}
                 <MDBox
                   color="dark"
                   icon="leaderboard"
@@ -42,7 +40,6 @@ function Dashboard() {
 
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
-            {/* Sección de gráficos */}
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart

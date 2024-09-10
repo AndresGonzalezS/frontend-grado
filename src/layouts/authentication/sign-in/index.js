@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -10,18 +11,21 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 const bgImage = "/images/img2.png";
 const img1 = "/images/img3.png";
 
-function Basic() {
-  const [email, setEmail] = useState("");
+function Basic({ onLoginSuccess }) {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (email === "admin@gmail.com" && password === "admin") {
+    if (username === "admin" && password === "admin") {
       console.log("Login successful");
-      // Redirigir o manejar el inicio de sesión exitoso
+      onLoginSuccess();
+      navigate("/dashboard");
     } else {
-      setError("Invalid email or password");
+      setError("Usuario o contraseña inválidos");
     }
   };
 
@@ -45,11 +49,11 @@ function Basic() {
           <MDBox component="form" role="form" onSubmit={handleSubmit}>
             <MDBox mb={2}>
               <MDInput
-                type="email"
-                label="Correo Electrónico"
+                type="text"
+                label="Usuario"
                 fullWidth
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </MDBox>
             <MDBox mb={2}>
@@ -79,5 +83,9 @@ function Basic() {
     </BasicLayout>
   );
 }
+
+Basic.propTypes = {
+  onLoginSuccess: PropTypes.func.isRequired,
+};
 
 export default Basic;
