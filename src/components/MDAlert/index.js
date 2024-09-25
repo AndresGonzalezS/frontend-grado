@@ -14,7 +14,6 @@ function MDAlert({ color, dismissible, children, ...rest }) {
 
   const handleAlertStatus = () => setAlertStatus("fadeOut");
 
-  // The base template for the alert
   const alertTemplate = (mount = true) => (
     <Fade in={mount} timeout={300}>
       <MDAlertRoot ownerState={{ color }} {...rest}>

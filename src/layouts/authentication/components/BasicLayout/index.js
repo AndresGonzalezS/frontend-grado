@@ -1,8 +1,6 @@
 import Grid from "@mui/material/Grid";
-
 import MDBox from "components/MDBox";
 import PropTypes from "prop-types";
-
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
 
@@ -32,7 +30,6 @@ function BasicLayout({ image, children }) {
           </Grid>
         </Grid>
       </MDBox>
-      {/* <Footer light /> */}
     </PageLayout>
   );
 }

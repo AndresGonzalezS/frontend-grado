@@ -1,34 +1,24 @@
 import { useState } from "react";
-
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAlert from "components/MDAlert";
 import MDButton from "components/MDButton";
 import MDSnackbar from "components/MDSnackbar";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 function Notifications() {
-  // Estado para controlar la visibilidad de las notificaciones
   const [snackbars, setSnackbars] = useState({
     success: false,
     info: false,
     warning: false,
     error: false,
   });
-
-  // Funciones para abrir y cerrar las notificaciones
   const openSnackbar = (type) => setSnackbars((prev) => ({ ...prev, [type]: true }));
   const closeSnackbar = (type) => setSnackbars((prev) => ({ ...prev, [type]: false }));
 
-  // Contenido de las alertas
   const alertContent = (name) => (
     <MDTypography variant="body2" color="white">
       Una alerta {name} simple con{" "}
@@ -39,7 +29,6 @@ function Notifications() {
     </MDTypography>
   );
 
-  // Definición de las notificaciones
   const renderSnackbar = (type, color, icon, title, content) => (
     <MDSnackbar
       color={color}

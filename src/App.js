@@ -11,8 +11,24 @@ import themeDark from "assets/theme-dark";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 import Basic from "layouts/authentication/sign-in";
+import axios from "axios";
+
 const brandWhite = "/images/img4.png";
 const brandDark = "/images/img4.png";
+
+const api = axios.create({
+  baseURL: "https://ingenieria.unac.edu.co/master/porcentajeDesercion/madre",
+  timeout: 10000,
+});
+
+const authenticate = async (credentials) => {
+  try {
+    const response = await api.post("/auth/", credentials);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error en la autenticación");
+  }
+};
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -28,6 +44,7 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState(null);
 
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -87,38 +104,44 @@ export default function App() {
     </MDBox>
   );
 
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
+  const handleLoginSuccess = async (credentials) => {
+    try {
+      const authResponse = await authenticate(credentials);
+      if (authResponse.success) {
+        setIsAuthenticated(true);
+      } else {
+        setAuthError("Credenciales inválidas");
+      }
+    } catch (error) {
+      setAuthError("Error en la autenticación");
+    }
   };
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {!isAuthenticated ? (
-        <Basic onLoginSuccess={handleLoginSuccess} />
-      ) : (
+      {layout === "dashboard" && (
         <>
-          {layout === "dashboard" && (
-            <>
-              <Sidenav
-                color={sidenavColor}
-                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-                brandName="Desercion estudiantil"
-                routes={routes}
-                onMouseEnter={handleOnMouseEnter}
-                onMouseLeave={handleOnMouseLeave}
-              />
-              <Configurator />
-              {configsButton}
-            </>
-          )}
-          {layout === "vr" && <Configurator />}
-          <Routes>
-            {getRoutes(routes)}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </Routes>
+          <Sidenav
+            color={sidenavColor}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+            brandName="UNAC"
+            routes={routes}
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+          <Configurator />
+          {configsButton}
         </>
       )}
+      <Routes>
+        {getRoutes(routes)}
+        <Route
+          path="/authentication/sign-in"
+          element={<Basic onLoginSuccess={handleLoginSuccess} authError={authError} />}
+        />
+        <Route path="*" element={<Navigate to="/authentication/sign-in" />} />
+      </Routes>
     </ThemeProvider>
   );
 }

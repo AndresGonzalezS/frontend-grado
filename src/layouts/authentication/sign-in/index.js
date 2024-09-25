@@ -7,9 +7,10 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
+import axios from "axios";
 
 const bgImage = "/images/img2.png";
-const img1 = "/images/img3.png";
+const img1 = "/images/img5.png";
 
 function Basic({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
@@ -18,14 +19,44 @@ function Basic({ onLoginSuccess }) {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (username === "admin" && password === "admin") {
-      console.log("Login successful");
-      onLoginSuccess();
-      navigate("/dashboard");
+
+    // Limpia errores anteriores
+    setError("");
+
+    try {
+      const response = await axios.post("https://ingenieria.unac.edu.co/master/auth/", {
+        USUARIO_ACCESO: username,
+        CLAVE_ACCESO: password,
+      });
+
+      // Manejo de respuesta exitosa
+      if (response.status === 200 && response.data.success) {
+        console.log("Login successful");
+        onLoginSuccess();
+        navigate("/dashboard");
+      } else {
+        setError("Usuario o contraseña inválidos");
+      }
+    } catch (err) {
+      handleError(err);
+    }
+  };
+
+  const handleError = (error) => {
+    if (error.response) {
+      // Error en la respuesta del servidor
+      console.error("Error en la respuesta del servidor:", error.response.data);
+      setError(error.response.data.message || "Error en la autenticación. Intenta de nuevo.");
+    } else if (error.request) {
+      // Error en la solicitud (sin respuesta)
+      console.error("Error en la solicitud:", error.message);
+      setError("No se recibió respuesta del servidor. Verifica tu conexión.");
     } else {
-      setError("Usuario o contraseña inválidos");
+      // Otro tipo de error
+      console.error("Error:", error.message);
+      setError("Error en la solicitud.");
     }
   };
 
@@ -34,7 +65,7 @@ function Basic({ onLoginSuccess }) {
       <Card>
         <MDBox
           variant="gradient"
-          bgColor="info"
+          bgColor="success"
           borderRadius="lg"
           coloredShadow="info"
           mx={2}
@@ -53,7 +84,10 @@ function Basic({ onLoginSuccess }) {
                 label="Usuario"
                 fullWidth
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  console.log("Username:", e.target.value);
+                }}
               />
             </MDBox>
             <MDBox mb={2}>
@@ -62,7 +96,10 @@ function Basic({ onLoginSuccess }) {
                 label="Contraseña"
                 fullWidth
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  console.log("Password:", e.target.value);
+                }}
               />
             </MDBox>
             {error && (
@@ -73,7 +110,7 @@ function Basic({ onLoginSuccess }) {
               </MDBox>
             )}
             <MDBox mt={4} mb={1}>
-              <MDButton type="submit" variant="gradient" color="info" fullWidth>
+              <MDButton type="submit" variant="gradient" color="success" fullWidth>
                 Ingresar
               </MDButton>
             </MDBox>

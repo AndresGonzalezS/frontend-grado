@@ -1,12 +1,8 @@
 import PropTypes from "prop-types";
-
 import Grid from "@mui/material/Grid";
-
 import MDBox from "components/MDBox";
-
 import DefaultNavbar from "examples/Navbars/DefaultNavbar";
 import PageLayout from "examples/LayoutContainers/PageLayout";
-
 import Footer from "layouts/authentication/components/Footer";
 
 function CoverLayout({ coverHeight, image, children }) {
@@ -50,13 +46,9 @@ function CoverLayout({ coverHeight, image, children }) {
     </PageLayout>
   );
 }
-
-// Setting default props for the CoverLayout
 CoverLayout.defaultProps = {
   coverHeight: "35vh",
 };
-
-// Typechecking props for the CoverLayout
 CoverLayout.propTypes = {
   coverHeight: PropTypes.string,
   image: PropTypes.string.isRequired,
