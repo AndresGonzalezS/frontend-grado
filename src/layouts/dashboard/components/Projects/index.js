@@ -1,4 +1,3 @@
-// @mui material components
 import Card from "@mui/material/Card";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -11,7 +10,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 function Projects() {
-  // Sample data, you can replace this with actual data
   const data = [
     { year: 2014, numberOfDropouts: 120 },
     { year: 2015, numberOfDropouts: 150 },

@@ -4,7 +4,6 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 
@@ -40,24 +39,23 @@ function Dashboard() {
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="info"
-                  title="Género"
-                  description="Deserción total por género"
-                  date="Tiempo de actualización de los datos"
-                  chart={tasks}
-                />
-              </MDBox>
+              <ReportsLineChart
+                color="info"
+                title="Género"
+                description="Deserción total por género"
+                date="Tiempo de actualización de los datos"
+                chart={tasks}
+              />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
+              <MDBox mb={3} sx={{ height: "32.5rem" }}>
                 <ReportsLineChart
                   color="info"
                   title="Año"
                   description="Deserción total del año pasado"
                   date="Tiempo de actualización de los datos"
                   chart={sales}
+                  height={500}
                 />
               </MDBox>
             </Grid>
@@ -69,6 +67,7 @@ function Dashboard() {
                   description="Deserción total de todos los años"
                   date="Tiempo de actualización de los datos"
                   chart={reportsBarChartData}
+                  height={500}
                 />
               </MDBox>
             </Grid>
@@ -76,10 +75,11 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="info"
-                  title="Género"
+                  title="Educación de la madre"
                   description="Deserción total por género"
                   date="Tiempo de actualización de los datos"
                   chart={tasks}
+                  height={500}
                 />
               </MDBox>
             </Grid>
@@ -87,10 +87,11 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="info"
-                  title="Género"
+                  title="Educación del padre"
                   description="Deserción total por género"
                   date="Tiempo de actualización de los datos"
                   chart={tasks}
+                  height={500}
                 />
               </MDBox>
             </Grid>
@@ -98,10 +99,11 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="info"
-                  title="Género"
+                  title="Sisben"
                   description="Deserción total por género"
                   date="Tiempo de actualización de los datos"
                   chart={tasks}
+                  height={500}
                 />
               </MDBox>
             </Grid>

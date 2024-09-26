@@ -22,20 +22,21 @@ function Basic({ onLoginSuccess }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Limpia errores anteriores
     setError("");
 
     try {
-      const response = await axios.post("https://ingenieria.unac.edu.co/master/auth/", {
+      const response = await axios.post("/master/auth/", {
         USUARIO_ACCESO: username,
         CLAVE_ACCESO: password,
       });
 
-      // Manejo de respuesta exitosa
       if (response.status === 200 && response.data.success) {
         console.log("Login successful");
-        onLoginSuccess();
+        const token = response.data.token;
+        console.log("Token recibido:", token);
+        localStorage.setItem("token", token);
         navigate("/dashboard");
+        onLoginSuccess();
       } else {
         setError("Usuario o contraseña inválidos");
       }
@@ -46,15 +47,10 @@ function Basic({ onLoginSuccess }) {
 
   const handleError = (error) => {
     if (error.response) {
-      // Error en la respuesta del servidor
-      console.error("Error en la respuesta del servidor:", error.response.data);
       setError(error.response.data.message || "Error en la autenticación. Intenta de nuevo.");
     } else if (error.request) {
-      // Error en la solicitud (sin respuesta)
-      console.error("Error en la solicitud:", error.message);
       setError("No se recibió respuesta del servidor. Verifica tu conexión.");
     } else {
-      // Otro tipo de error
       console.error("Error:", error.message);
       setError("Error en la solicitud.");
     }

@@ -1,7 +1,5 @@
 import { useEffect } from "react";
-
 import { useLocation, NavLink } from "react-router-dom";
-
 import PropTypes from "prop-types";
 
 import List from "@mui/material/List";
@@ -11,7 +9,6 @@ import Icon from "@mui/material/Icon";
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
 
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
 

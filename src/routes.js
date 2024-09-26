@@ -4,7 +4,6 @@ import SignIn from "layouts/authentication/sign-in";
 import Icon from "@mui/material/Icon";
 import { useNavigate } from "react-router-dom";
 
-// Esta función se utilizará para manejar el éxito en el inicio de sesión
 function handleLoginSuccess() {
   const navigate = useNavigate();
   navigate("/dashboard");
@@ -49,7 +48,6 @@ const routes = [
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/sign-in",
-    // Aquí le pasamos la función onLoginSuccess al componente SignIn
     component: <SignIn onLoginSuccess={handleLoginSuccess} />,
   },
 ];

@@ -1,8 +1,6 @@
-// @mui material components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-// Chart.js
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from "chart.js";
 

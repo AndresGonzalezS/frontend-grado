@@ -16,11 +16,6 @@ import axios from "axios";
 const brandWhite = "/images/img4.png";
 const brandDark = "/images/img4.png";
 
-const api = axios.create({
-  baseURL: "https://ingenieria.unac.edu.co/master/porcentajeDesercion/madre",
-  timeout: 10000,
-});
-
 const authenticate = async (credentials) => {
   try {
     const response = await api.post("/auth/", credentials);
@@ -124,8 +119,8 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="UNAC"
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandWhite : brandDark}
+            brandName="NoDropOut"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

@@ -18,7 +18,7 @@ import {
   setDarkMode,
 } from "context";
 
-const img3 = "/images/img4.png";
+const img = "/images/img4.png";
 
 function Configurator() {
   const [controller, dispatch] = useMaterialUIController();
@@ -39,6 +39,8 @@ function Configurator() {
     }
 
     window.addEventListener("resize", handleDisabled);
+
+    handleWhiteSidenav();
 
     handleDisabled();
 
@@ -257,7 +259,7 @@ function Configurator() {
         </MDBox>
         <MDBox mt={3} display="flex" justifyContent="center" alignItems="center">
           <img
-            src={img3}
+            src={img}
             alt="Configuración de diseño"
             style={{ width: "50%", borderRadius: "18px" }}
           />
