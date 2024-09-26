@@ -26,7 +26,7 @@ function Basic({ onLoginSuccess }) {
     setError("");
 
     try {
-      const response = await axios.post("https://ingenieria.unac.edu.co/master/auth/", {
+      const response = await axios.post("/master/auth/", {
         USUARIO_ACCESO: username,
         CLAVE_ACCESO: password,
       });
@@ -34,8 +34,12 @@ function Basic({ onLoginSuccess }) {
       // Manejo de respuesta exitosa
       if (response.status === 200 && response.data.success) {
         console.log("Login successful");
-        onLoginSuccess();
+        const token = response.data.token;
+        console.log("Token recibido:", token);
+        localStorage.setItem("token", token);
+        console.log("Navegando a dashboard...");
         navigate("/dashboard");
+        onLoginSuccess();
       } else {
         setError("Usuario o contraseña inválidos");
       }
