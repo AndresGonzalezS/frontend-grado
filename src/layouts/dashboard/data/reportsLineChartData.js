@@ -1,3 +1,5 @@
+import { Height } from "@mui/icons-material";
+
 export default {
   sales: {
     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"],
@@ -6,5 +8,54 @@ export default {
   tasks: {
     labels: ["2020", "2021", "2023", "2024"],
     datasets: { label: "total", data: [50, 40, 300, 220, 500, 250, 400, 230, 500] },
+  },
+  desertores: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  generoDesercion: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  desertoresPadre: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  desertoresSisben: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  etniaDesercionPart1: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  etniaDesercionPart2: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
+  },
+  desertoresPaises: {
+    labels: [],
+    datasets: {
+      label: "Cantidad de estudiantes desertores",
+      data: [],
+    },
   },
 };

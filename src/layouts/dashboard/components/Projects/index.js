@@ -11,13 +11,13 @@ import Paper from "@mui/material/Paper";
 
 function Projects() {
   const data = [
-    { year: 2014, numberOfDropouts: 120 },
-    { year: 2015, numberOfDropouts: 150 },
-    { year: 2016, numberOfDropouts: 180 },
-    { year: 2017, numberOfDropouts: 200 },
-    { year: 2018, numberOfDropouts: 220 },
-    { year: 2019, numberOfDropouts: 250 },
-    { year: 2020, numberOfDropouts: 270 },
+    { year: 2014, numberOfDropouts: 402 },
+    { year: 2015, numberOfDropouts: 630 },
+    { year: 2016, numberOfDropouts: 880 },
+    { year: 2017, numberOfDropouts: 930 },
+    { year: 2018, numberOfDropouts: 1220 },
+    { year: 2019, numberOfDropouts: 1540 },
+    { year: 2020, numberOfDropouts: 1470 },
   ];
 
   return (

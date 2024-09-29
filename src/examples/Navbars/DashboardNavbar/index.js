@@ -1,21 +1,15 @@
 import { useState, useEffect } from "react";
-
 import { useLocation, Link } from "react-router-dom";
-
 import PropTypes from "prop-types";
-
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
-
 import MDBox from "components/MDBox";
 import MDInput from "components/MDInput";
-
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
-
 import {
   navbar,
   navbarContainer,
@@ -23,7 +17,6 @@ import {
   navbarIconButton,
   navbarMobileMenu,
 } from "examples/Navbars/DashboardNavbar/styles";
-
 import {
   useMaterialUIController,
   setTransparentNavbar,
@@ -36,6 +29,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // Estado para manejar el valor de búsqueda
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
@@ -50,7 +44,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
     }
 
     window.addEventListener("scroll", handleTransparentNavbar);
-
     handleTransparentNavbar();
 
     return () => window.removeEventListener("scroll", handleTransparentNavbar);
@@ -60,6 +53,16 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value); // Actualiza el estado con el valor de búsqueda
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault(); // Previene el comportamiento predeterminado del formulario
+    console.log("Search Query:", searchQuery); // Aquí puedes manejar la búsqueda como desees
+    // Implementar la lógica de búsqueda (ej., filtrado de datos, redirección, etc.)
+  };
 
   const renderMenu = () => (
     <Menu
@@ -103,15 +106,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
-              <MDInput label="Search here" />
-            </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
               <IconButton
                 size="small"
                 disableRipple
@@ -122,15 +117,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 <Icon sx={iconsStyle} fontSize="medium">
                   {miniSidenav ? "menu_open" : "menu"}
                 </Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
               </IconButton>
               {renderMenu()}
             </MDBox>

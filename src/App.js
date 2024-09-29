@@ -94,7 +94,7 @@ export default function App() {
       onClick={handleConfiguratorOpen}
     >
       <Icon fontSize="small" color="inherit">
-        settings
+        account_balance
       </Icon>
     </MDBox>
   );
@@ -119,7 +119,7 @@ export default function App() {
         <>
           <Sidenav
             color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandWhite : brandDark}
+            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="NoDropOut"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}

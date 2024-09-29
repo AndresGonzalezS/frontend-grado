@@ -31,9 +31,7 @@ function Basic({ onLoginSuccess }) {
       });
 
       if (response.status === 200 && response.data.success) {
-        console.log("Login successful");
         const token = response.data.token;
-        console.log("Token recibido:", token);
         localStorage.setItem("token", token);
         navigate("/dashboard");
         onLoginSuccess();
@@ -63,7 +61,7 @@ function Basic({ onLoginSuccess }) {
           variant="gradient"
           bgColor="success"
           borderRadius="lg"
-          coloredShadow="info"
+          coloredShadow="success"
           mx={2}
           mt={-3}
           p={2}
@@ -82,7 +80,6 @@ function Basic({ onLoginSuccess }) {
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
-                  console.log("Username:", e.target.value);
                 }}
               />
             </MDBox>
@@ -94,7 +91,6 @@ function Basic({ onLoginSuccess }) {
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
-                  console.log("Password:", e.target.value);
                 }}
               />
             </MDBox>

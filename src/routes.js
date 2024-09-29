@@ -1,6 +1,8 @@
 import Dashboard from "layouts/dashboard";
 import Notifications from "layouts/notifications";
 import SignIn from "layouts/authentication/sign-in";
+import Facultades from "layouts/facultades";
+import Predictivo from "layouts/predictivo";
 import Icon from "@mui/material/Icon";
 import { useNavigate } from "react-router-dom";
 
@@ -14,25 +16,25 @@ const routes = [
     type: "collapse",
     name: "Descriptivo",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: <Icon fontSize="small">table_view</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
   },
   {
     type: "collapse",
     name: "Predictivo",
-    key: "Predictivo",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
+    key: "predictivo",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/predictivo",
+    component: <Predictivo />,
   },
   {
     type: "collapse",
     name: "Facultades",
-    key: "Facultades",
-    icon: <Icon fontSize="small">dashboard</Icon>,
-    route: "/dashboard",
-    component: <Dashboard />,
+    key: "facultades",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/facultades",
+    component: <Facultades />,
   },
   {
     type: "collapse",
