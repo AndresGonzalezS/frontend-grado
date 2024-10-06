@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   TextField,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -16,47 +17,33 @@ import {
 } from "@mui/material";
 
 function Predictivo() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [modelStats, setModelStats] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const responseEstudiantes = await axios.get("/master/entrenar_modelo2/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const handleSearch = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`/master/predecir_desercion2/?carnet=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        if (responseEstudiantes.data.success) {
-          setData(responseEstudiantes.data.data);
-        }
-
-        const responseModelo = await axios.get("/master/entrenar_modelo2/esudiantes", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (responseModelo.data.success) {
-          setModelStats(responseModelo.data);
-        }
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
+      if (response.data) {
+        setData(response.data);
       }
-    };
-    fetchData();
-  }, []);
-
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    } catch (error) {
+      console.error("Error al obtener la predicción:", error);
+      setError("No se pudo obtener la predicción. Inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const filteredData = data.filter((item) =>
-    item.carnet.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <DashboardLayout>
@@ -70,71 +57,51 @@ function Predictivo() {
                 variant="outlined"
                 fullWidth
                 value={searchQuery}
-                onChange={handleSearch}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Carnet</TableCell>
-                      <TableCell>Deserta</TableCell>
-                      <TableCell>Probabilidad de Deserción</TableCell>
-                      <TableCell>Género</TableCell>
-                      <TableCell>Matemáticas</TableCell>
-                      <TableCell>Prog</TableCell>
-                      <TableCell>Promedio General</TableCell>
-                      <TableCell>Religión</TableCell>
-                      <TableCell>SISBEN</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {filteredData.length > 0 ? (
-                      filteredData.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.carnet}</TableCell>
-                          <TableCell>{item.deserta ? "Sí" : "No"}</TableCell>
-                          <TableCell>{item.probabilidad_desercion}</TableCell>
-                          <TableCell>{item.variables_influyentes.GENERO}</TableCell>
-                          <TableCell>{item.variables_influyentes.MAT}</TableCell>
-                          <TableCell>{item.variables_influyentes.PROG}</TableCell>
-                          <TableCell>{item.variables_influyentes.PROMEDIO_GENERAL}</TableCell>
-                          <TableCell>{item.variables_influyentes.RELG}</TableCell>
-                          <TableCell>{item.variables_influyentes.SISBEN}</TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={9} align="center">
-                          No se encontraron estudiantes.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <Button variant="contained" color="primary" onClick={handleSearch} disabled={loading}>
+                {loading ? "Cargando..." : "Predecir Deserción"}
+              </Button>
             </Grid>
             <Grid item xs={12}>
-              {modelStats && (
-                <Paper style={{ padding: 16 }}>
-                  <h2>Estadísticas del Modelo</h2>
-                  <p>Precisión: {modelStats.accuracy * 100}%</p>
-                  <h3>Matriz de Confusión</h3>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+            </Grid>
+            {data && (
+              <Grid item xs={12}>
+                <TableContainer component={Paper}>
                   <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Carnet</TableCell>
+                        <TableCell>Deserta</TableCell>
+                        <TableCell>Probabilidad de Deserción</TableCell>
+                        <TableCell>Género</TableCell>
+                        <TableCell>Matemáticas</TableCell>
+                        <TableCell>Prog</TableCell>
+                        <TableCell>Promedio General</TableCell>
+                        <TableCell>Religión</TableCell>
+                        <TableCell>SISBEN</TableCell>
+                      </TableRow>
+                    </TableHead>
                     <TableBody>
-                      {modelStats.matriz_confusion.map((row, rowIndex) => (
-                        <TableRow key={rowIndex}>
-                          {row.map((value, colIndex) => (
-                            <TableCell key={colIndex}>{value}</TableCell>
-                          ))}
-                        </TableRow>
-                      ))}
+                      <TableRow>
+                        <TableCell>{data.carnet}</TableCell>
+                        <TableCell>{data.deserta ? "Sí" : "No"}</TableCell>
+                        <TableCell>{data.probabilidad_desercion}</TableCell>
+                        <TableCell>{data.variables_influyentes.GENERO}</TableCell>
+                        <TableCell>{data.variables_influyentes.MAT}</TableCell>
+                        <TableCell>{data.variables_influyentes.PROG}</TableCell>
+                        <TableCell>{data.variables_influyentes.PROMEDIO_GENERAL}</TableCell>
+                        <TableCell>{data.variables_influyentes.RELG}</TableCell>
+                        <TableCell>{data.variables_influyentes.SISBEN}</TableCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
-                </Paper>
-              )}
-            </Grid>
+                </TableContainer>
+              </Grid>
+            )}
           </Grid>
         </MDBox>
       </MDBox>
