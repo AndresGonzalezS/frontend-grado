@@ -1,5 +1,5 @@
 import Dashboard from "layouts/dashboard";
-import Notifications from "layouts/notifications";
+//import Notifications from "layouts/notifications";
 import SignIn from "layouts/authentication/sign-in";
 import Facultades from "layouts/facultades";
 import Predictivo from "layouts/predictivo";
@@ -36,14 +36,14 @@ const routes = [
     route: "/facultades",
     component: <Facultades />,
   },
-  {
+  /*{
     type: "collapse",
     name: "Alertas",
     key: "notifications",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
-  },
+  },*/
   {
     type: "collapse",
     name: "Log off",

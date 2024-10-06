@@ -1,34 +1,23 @@
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
-import Box from "@mui/material/Box";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
+import ReportsPieChart from "./data/ReportsPieChart";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import VerticalBarChart from "./data/VerticalBarChart";
-import PieChart from "examples/Charts/PieChart";
-function Dashboard() {
-  const {
-    sales,
-    tasks,
-    desertores,
-    generoDesercion,
-    desertoresPadre,
-    desertoresSisben,
-    desertoresPaises,
-  } = reportsLineChartData;
 
+function Dashboard() {
   const [data, setData] = useState(reportsLineChartData);
   const [dataGenero, setGeneroData] = useState(reportsLineChartData);
   const [padreData, setPadreData] = useState(reportsLineChartData);
   const [sisbenData, setSisbenData] = useState(reportsLineChartData);
   const [etnia, setEtniaData] = useState(reportsLineChartData);
   const [desertoresPais, setDesertoresPais] = useState(reportsLineChartData);
+
   useEffect(() => {
     const fetchDesertoresData = async () => {
       try {
@@ -95,7 +84,6 @@ function Dashboard() {
     fetchGeneroData();
   }, []);
 
-  // Desertores por nivel educativo del padre
   useEffect(() => {
     const fetchPadreData = async () => {
       try {
@@ -130,7 +118,6 @@ function Dashboard() {
     fetchPadreData();
   }, []);
 
-  // Fetch data for "Desertores por SISBEN"
   useEffect(() => {
     const fetchSisbenData = async () => {
       try {
@@ -211,6 +198,7 @@ function Dashboard() {
     };
     fetchEtniaData();
   }, []);
+
   useEffect(() => {
     const fetchDesertoresPais = async () => {
       try {
@@ -242,6 +230,7 @@ function Dashboard() {
     };
     fetchDesertoresPais();
   }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -272,10 +261,10 @@ function Dashboard() {
             </Grid>
             <Grid item xs={12} md={6} lg={12}>
               <MDBox mb={3} mt={2}>
-                <PieChart
+                <ReportsLineChart
                   color="info"
-                  title="Género"
-                  description="Deserción total por género"
+                  title="Deserción por Género"
+                  description="Un 70% de los desertores son hombres, lo que sugiere que se requiere atención especial para este grupo. Implementar estrategias de retención dirigidas a hombres puede ser clave para reducir las tasas de deserción."
                   date="Datos actualizados hasta el 2024-1"
                   chart={dataGenero.generoDesercion}
                 />
@@ -285,8 +274,8 @@ function Dashboard() {
               <MDBox mb={3} mt={2}>
                 <ReportsLineChart
                   color="info"
-                  title="Educación Padre"
-                  description="La mayoría de los desertores proviene de familias sin información sobre el nivel educativo de los padres, lo que podría ser un factor de riesgo. También se observa que los padres con educación básica primaria están relacionados con más deserciones, mientras que niveles educativos más altos se asocian con menor deserción."
+                  title="Deserción por Nivel Educativo del Padre"
+                  description="Un número significativo de desertores proviene de familias con padres con educación básica primaria. Esto resalta la necesidad de intervención en estos casos para mitigar las tasas de deserción."
                   date="Datos actualizados hasta el 2024-1"
                   chart={padreData.desertoresPadre}
                 />
@@ -296,8 +285,8 @@ function Dashboard() {
               <MDBox mb={3} mt={2}>
                 <ReportsLineChart
                   color="info"
-                  title="Etnia Parte 1"
-                  description="Deserción total por etnia 1 Parte"
+                  title="Deserción por Etnia"
+                  description="El 60% de los desertores proviene de la población mestiza. Sin embargo, las minorías deben ser objeto de atención para garantizar igualdad de oportunidades."
                   date="Datos actualizados hasta el 2024-1"
                   chart={etnia.etniaDesercionPart1}
                 />
@@ -307,8 +296,8 @@ function Dashboard() {
               <MDBox mb={3} mt={2}>
                 <ReportsLineChart
                   color="info"
-                  title="Etnia Parte 2"
-                  description="Deserción total por etnia 2 Parte"
+                  title="Deserción por Etnia (continuación)"
+                  description="El 60% de los desertores proviene de la población mestiza. Sin embargo, las minorías deben ser objeto de atención para garantizar igualdad de oportunidades."
                   date="Datos actualizados hasta el 2024-1"
                   chart={etnia.etniaDesercionPart2}
                 />
@@ -318,8 +307,8 @@ function Dashboard() {
               <MDBox mb={3} mt={2}>
                 <ReportsLineChart
                   color="info"
-                  title="Pais"
-                  description="La mayoría de los desertores proviene de Colombia, mientras que un 3.1% no tiene país de origen especificado. Esto indica que la deserción está altamente concentrada en Colombia, sugiriendo problemas en su sistema educativo."
+                  title="Deserción por País"
+                  description="Un gran porcentaje de desertores proviene de Colombia. Aun así, es importante identificar las causas y promover la educación en los países vecinos."
                   date="Datos actualizados hasta el 2024-1"
                   chart={desertoresPais.desertoresPaises}
                 />

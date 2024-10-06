@@ -16,6 +16,7 @@ function Basic({ onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ function Basic({ onLoginSuccess }) {
     event.preventDefault();
 
     setError("");
+    setLoading(true);
 
     try {
       const response = await axios.post("/master/auth/", {
@@ -40,6 +42,8 @@ function Basic({ onLoginSuccess }) {
       }
     } catch (err) {
       handleError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -78,9 +82,7 @@ function Basic({ onLoginSuccess }) {
                 label="Usuario"
                 fullWidth
                 value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </MDBox>
             <MDBox mb={2}>
@@ -89,9 +91,7 @@ function Basic({ onLoginSuccess }) {
                 label="Contraseña"
                 fullWidth
                 value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </MDBox>
             {error && (
@@ -102,8 +102,14 @@ function Basic({ onLoginSuccess }) {
               </MDBox>
             )}
             <MDBox mt={4} mb={1}>
-              <MDButton type="submit" variant="gradient" color="success" fullWidth>
-                Ingresar
+              <MDButton
+                type="submit"
+                variant="gradient"
+                disabled={loading}
+                color="success"
+                fullWidth
+              >
+                {loading ? "Cargando..." : "Ingresar"}
               </MDButton>
             </MDBox>
           </MDBox>

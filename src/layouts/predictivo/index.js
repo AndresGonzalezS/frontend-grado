@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import {
   TextField,
@@ -13,130 +13,169 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import MDButton from "components/MDButton";
+
+const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+  marginTop: theme.spacing(2),
+  borderRadius: 8,
+  border: `1px solid ${theme.palette.divider}`,
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+}));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  fontSize: 16,
+  fontWeight: 500,
+  color: theme.palette.text.primary,
+  padding: theme.spacing(2),
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const IntroductionBox = styled(MDBox)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  padding: theme.spacing(2),
+  borderRadius: 8,
+  marginBottom: theme.spacing(2),
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+}));
 
 function Predictivo() {
-  const [data, setData] = useState([]);
-  const [modelStats, setModelStats] = useState(null);
+  const [data, setData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const responseEstudiantes = await axios.get("/master/entrenar_modelo2/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  const handleSearch = async () => {
+    if (!searchQuery) {
+      setError("Por favor ingresa un carnet.");
+      return;
+    }
 
-        if (responseEstudiantes.data.success) {
-          setData(responseEstudiantes.data.data);
-        }
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`/master/predecir_desercion2/?carnet=${searchQuery}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        const responseModelo = await axios.get("/master/entrenar_modelo2/esudiantes", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (responseModelo.data.success) {
-          setModelStats(responseModelo.data);
-        }
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
+      if (response.data) {
+        setData(response.data);
       }
-    };
-    fetchData();
-  }, []);
-
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value);
+    } catch (error) {
+      console.error("Error al obtener la predicción:", error);
+      setError("No se pudo obtener la predicción. Inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
   };
-
-  const filteredData = data.filter((item) =>
-    item.carnet.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={1}>
-        <MDBox py={1}>
-          <Grid container spacing={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <IntroductionBox>
+              <Typography variant="h6" component="h2" gutterBottom>
+                Modo Predictivo de la UNAC
+              </Typography>
+              <Typography variant="body1">
+                Este es el modo predictivo, donde puedes ingresar el carnet del estudiante que
+                deseas analizar y, posteriormente, pulsar el botón &quot;Predecir Deserción&quot;
+                para generar los datos de predicción.
+              </Typography>
+            </IntroductionBox>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Buscar estudiante (Carnet)"
+              variant="outlined"
+              fullWidth
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <MDButton
+              variant="gradient"
+              disabled={loading}
+              color="info"
+              fullWidth
+              onClick={handleSearch}
+            >
+              {loading ? "Cargando..." : "Predecir Deserción"}
+            </MDButton>
+          </Grid>
+          <Grid item xs={12}>
+            {error && <Typography color="error">{error}</Typography>}
+          </Grid>
+          {loading && (
             <Grid item xs={12}>
-              <TextField
-                label="Buscar estudiante (Carnet)"
-                variant="outlined"
-                fullWidth
-                value={searchQuery}
-                onChange={handleSearch}
-              />
+              <Typography>Cargando datos...</Typography>
             </Grid>
+          )}
+          {data && (
             <Grid item xs={12}>
-              <TableContainer component={Paper}>
+              <StyledTableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Carnet</TableCell>
-                      <TableCell>Deserta</TableCell>
-                      <TableCell>Probabilidad de Deserción</TableCell>
-                      <TableCell>Género</TableCell>
-                      <TableCell>Matemáticas</TableCell>
-                      <TableCell>Prog</TableCell>
-                      <TableCell>Promedio General</TableCell>
-                      <TableCell>Religión</TableCell>
-                      <TableCell>SISBEN</TableCell>
+                      <StyledTableCell>Variable</StyledTableCell>
+                      <StyledTableCell>Valor</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredData.length > 0 ? (
-                      filteredData.map((item, index) => (
-                        <TableRow key={index}>
-                          <TableCell>{item.carnet}</TableCell>
-                          <TableCell>{item.deserta ? "Sí" : "No"}</TableCell>
-                          <TableCell>{item.probabilidad_desercion}</TableCell>
-                          <TableCell>{item.variables_influyentes.GENERO}</TableCell>
-                          <TableCell>{item.variables_influyentes.MAT}</TableCell>
-                          <TableCell>{item.variables_influyentes.PROG}</TableCell>
-                          <TableCell>{item.variables_influyentes.PROMEDIO_GENERAL}</TableCell>
-                          <TableCell>{item.variables_influyentes.RELG}</TableCell>
-                          <TableCell>{item.variables_influyentes.SISBEN}</TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={9} align="center">
-                          No se encontraron estudiantes.
-                        </TableCell>
-                      </TableRow>
-                    )}
+                    <TableRow>
+                      <StyledTableCell>Carnet</StyledTableCell>
+                      <StyledTableCell>{data.carnet}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Deserta</StyledTableCell>
+                      <StyledTableCell>{data.deserta ? "Sí" : "No"}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Probabilidad de Deserción</StyledTableCell>
+                      <StyledTableCell>{data.probabilidad_desercion}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Género</StyledTableCell>
+                      <StyledTableCell>{data.variables_influyentes.GENERO}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Matemáticas</StyledTableCell>
+                      <StyledTableCell>{data.variables_influyentes.MAT}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Prog</StyledTableCell>
+                      <StyledTableCell>{data.variables_influyentes.PROG}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Promedio General</StyledTableCell>
+                      <StyledTableCell>
+                        {data.variables_influyentes.PROMEDIO_GENERAL}
+                      </StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>Religión</StyledTableCell>
+                      <StyledTableCell>{data.variables_influyentes.RELG}</StyledTableCell>
+                    </TableRow>
+                    <TableRow>
+                      <StyledTableCell>SISBEN</StyledTableCell>
+                      <StyledTableCell>{data.variables_influyentes.SISBEN}</StyledTableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
-              </TableContainer>
+              </StyledTableContainer>
             </Grid>
-            <Grid item xs={12}>
-              {modelStats && (
-                <Paper style={{ padding: 16 }}>
-                  <h2>Estadísticas del Modelo</h2>
-                  <p>Precisión: {modelStats.accuracy * 100}%</p>
-                  <h3>Matriz de Confusión</h3>
-                  <Table>
-                    <TableBody>
-                      {modelStats.matriz_confusion.map((row, rowIndex) => (
-                        <TableRow key={rowIndex}>
-                          {row.map((value, colIndex) => (
-                            <TableCell key={colIndex}>{value}</TableCell>
-                          ))}
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </Paper>
-              )}
-            </Grid>
-          </Grid>
-        </MDBox>
+          )}
+        </Grid>
       </MDBox>
     </DashboardLayout>
   );
