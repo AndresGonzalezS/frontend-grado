@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, registerables } from "chart.js";
@@ -15,6 +15,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+
+// Importamos el componente StudentCards
+import StudentCards from "./index2";
 
 ChartJS.register(...registerables);
 
@@ -48,23 +51,7 @@ function Facultades() {
       }
     };
 
-    const fetchTopEstudiantesData = async () => {
-      try {
-        const responses = await Promise.all([
-          axios.get("/master/top/General"),
-          axios.get("/master/top/FacultadAdministrativas"),
-          axios.get("/master/top/FacultadTeologia"),
-          axios.get("/master/top/FacultadIngeniera"),
-          axios.get("/master/top/FacultadCienciasSalud"),
-          axios.get("/master/top/FacultadHumanasEducacion"),
-        ]);
-      } catch (error) {
-        console.error("Error al obtener los datos del top de estudiantes:", error);
-      }
-    };
-
     fetchFacultadesData();
-    fetchTopEstudiantesData();
   }, []);
 
   const prepareChartData = (data) => {
@@ -100,24 +87,6 @@ function Facultades() {
       const facultadSeleccionada = chartData.labels[index];
       setSelectedFacultad(facultadSeleccionada);
       fetchTopEstudiantes(facultadSeleccionada);
-    }
-  };
-
-  const fetchTopEstudiantes = async (facultad) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`/master/topEstudiantes/${facultad}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.data.success) {
-        setTopDatos(response.data.topEstudiantes);
-      } else {
-        setTopDatos([]);
-      }
-    } catch (error) {
-      console.error("Error al obtener los datos del top de estudiantes:", error);
-      setTopDatos([]);
     }
   };
 
@@ -220,6 +189,10 @@ function Facultades() {
                 )}
               </MDBox>
             )}
+            <MDBox mt={4}>
+              <h4>Lista de Estudiantes</h4>
+              <StudentCards />
+            </MDBox>
           </Grid>
         </Grid>
       </MDBox>
